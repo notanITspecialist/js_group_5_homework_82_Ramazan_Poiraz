@@ -21,18 +21,26 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 router.get('/', async (req, res) => {
-   if(req.query.artist){
-       const data = await Album.find({author: req.query.artist});
-       res.send(data);
-   } else {
-       const data = await Album.find();
-       res.send(data);
+   try {
+       if(req.query.artist){
+           const data = await Album.find({author: req.query.artist});
+           res.send(data);
+       } else {
+           const data = await Album.find();
+           res.send(data);
+       }
+   } catch (e) {
+       res.send({error: e});
    }
 });
 
 router.get('/:id', async (req, res) => {
-   const album = await Album.find(ObjectId(req.params.id)).populate('author');
-   res.send(album);
+   try {
+       const album = await Album.find(ObjectId(req.params.id)).populate('author');
+       res.send(album);
+   } catch (e) {
+       res.send({error: e});
+   }
 });
 
 router.post('/', upload.single('poster'), async (req, res) => {

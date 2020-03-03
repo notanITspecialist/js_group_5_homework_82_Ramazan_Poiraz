@@ -5,26 +5,33 @@ const Album = require('../models/album');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    if(req.query.album){
-        const tracks = await Track.find({album: req.query.album});
-        res.send(tracks);
-    } else if(req.query.artist) {
-        const albums = await Album.find({author: req.query.artist});
-        const tracks = albums.map(async e => await Track.find({album: e._id}));
-        const result = (await Promise.all(tracks)).flat();
-        res.send(result);
-    } else {
-        const tracks = await Track.find();
-        res.send(tracks);
+    try {
+        if(req.query.album){
+            const tracks = await Track.find({album: req.query.album});
+            res.send(tracks);
+        } else if(req.query.artist) {
+            const albums = await Album.find({author: req.query.artist});
+            const result = await Promise.all( albums.map(async e => await Track.find({album: e._id}) ));
+            res.send(result.flat());
+        } else {
+            const tracks = await Track.find();
+            res.send(tracks);
+        }
+    } catch (e) {
+        res.send({error: e});
     }
 });
 
 router.post('/', async (req, res) => {
-    const newTrack = new Track(req.body);
+    try{
+        const newTrack = new Track(req.body);
 
-    newTrack.save();
+        newTrack.save();
 
-    res.send({_id: newTrack._id})
+        res.send({_id: newTrack._id})
+    } catch (e) {
+        res.send({error: e})
+    }
 });
 
 module.exports = router;

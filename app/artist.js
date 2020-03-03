@@ -28,12 +28,15 @@ router.post('/', upload.single('photo'), async (req, res) => {
     if(req.file){
         req.body.photo = req.file.filename;
     }
+    try {
+        const newArtist = new Artist(req.body);
 
-    const newArtist = new Artist(req.body);
+        newArtist.save();
 
-    newArtist.save();
-
-    res.send({_id: newArtist._id});
+        res.send({_id: newArtist._id});
+    } catch (e) {
+        res.send({error: e});
+    }
 });
 
 module.exports = router;
