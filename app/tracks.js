@@ -24,10 +24,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try{
-        const newTrack = new Track(req.body);
-
-        newTrack.save();
-
+        const newTrack = await Track.create(req.body);
         res.send({_id: newTrack._id})
     } catch (e) {
         res.send({error: e})

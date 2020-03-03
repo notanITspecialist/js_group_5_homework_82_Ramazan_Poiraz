@@ -25,17 +25,16 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', upload.single('photo'), async (req, res) => {
-    if(req.file){
-        req.body.photo = req.file.filename;
-    }
     try {
-        const newArtist = new Artist(req.body);
+        if(req.file){
+            req.body.photo = req.file.filename;
+        }
 
-        newArtist.save();
+        const newArtist = await Artist.create(req.body);
 
         res.send({_id: newArtist._id});
     } catch (e) {
-        res.send({error: e});
+        res.status(400).send({error: e});
     }
 });
 

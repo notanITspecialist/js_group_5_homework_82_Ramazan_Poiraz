@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) => {
        const album = await Album.find(ObjectId(req.params.id)).populate('author');
        res.send(album);
    } catch (e) {
-       res.send({error: e});
+       res.send({error: 'Album not found'});
    }
 });
 
@@ -48,12 +48,11 @@ router.post('/', upload.single('poster'), async (req, res) => {
         req.body.poster = req.file.filename;
     }
     try {
-        const newAlbum = new Album(req.body);
-        newAlbum.save();
+        const newAlbum = await Album.create(req.body);
 
         res.send({_id: newAlbum._id})
     } catch (e) {
-        res.send({error: 'Author not found'})
+        res.send({error: e})
     }
 });
 
