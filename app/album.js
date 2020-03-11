@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
 const nanoid = require('nanoid');
-const ObjectId = require('mongoose').Types.ObjectId;
 const path = require('path');
 
 const config = require('../config');
@@ -36,7 +35,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
    try {
-       const album = await Album.find(ObjectId(req.params.id)).populate('author');
+       const album = await Album.find({author: req.params.id});
        res.send(album);
    } catch (e) {
        res.send({error: 'Album not found'});

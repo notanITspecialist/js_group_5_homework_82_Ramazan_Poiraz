@@ -8,8 +8,9 @@ module.exports = async (req, res, next) => {
   const user = await User.findOne({token});
 
   if(type !== 'Token' || !user) return res.status(401).send({error: 'Unauthorized'});
-
-  req.userId = user._id.toString();
-
+  req.newHistory = {
+    user: user._id.toString(),
+    track: req.body.track
+  };
   next();
 };

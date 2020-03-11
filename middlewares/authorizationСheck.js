@@ -2,8 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 module.exports = async (req, res , next) => {
-  console.log(req.body);
-
   const user = await User.findOne({username: req.body.username});
 
   if(!user) res.status(400).send({error: 'Username or password in incorrect'});

@@ -7,12 +7,8 @@ const historyAdded = require('../middlewares/historyAdded');
 const router = express.Router();
 
 router.post('/', historyAdded, async (req, res) => {
-   const newHistory = {
-      user: req.userId,
-      track: req.body.track
-   };
    try {
-      const newTrackHistory = await TrackHistory.create(newHistory);
+      const newTrackHistory = await TrackHistory.create(req.newHistory);
 
       return res.send({track_history: newTrackHistory});
    } catch (e) {
