@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 
 const Schema = mongoose.Schema;
 
-const trackSchema = mongoose.Schema({
+const connect = mongoose.createConnection('mongodb://localhost/music', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
+autoIncrement.initialize(connect);
+
+const trackSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -18,6 +22,7 @@ const trackSchema = mongoose.Schema({
     }
 });
 
+trackSchema.plugin(autoIncrement.plugin, 'Track');
 const Album = mongoose.model('Track', trackSchema);
 
 module.exports = Album;

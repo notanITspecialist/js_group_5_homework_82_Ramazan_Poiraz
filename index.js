@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.static('public'));
 
 const init = async () => {
-    await mongoose.connect('mongodb://localhost/music', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
+    await mongoose.connect('mongodb://localhost/music',{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 
     app.use('/artist', artist);
     app.use('/album', album);

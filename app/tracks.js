@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         if(req.query.album){
-            const tracks = await Track.find({album: req.query.album});
+            const tracks = await Track.find({album: req.query.album}).populate('album');
             res.send(tracks);
         } else if(req.query.artist) {
             const albums = await Album.find({author: req.query.artist});
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try{
         const newTrack = await Track.create(req.body);
-        res.send({_id: newTrack._id})
+        res.send({_id: newTrack})
     } catch (e) {
         res.send({error: e})
     }

@@ -5,6 +5,7 @@ const path = require('path');
 
 const config = require('../config');
 const Album = require('../models/album');
+const Track = require('../models/track');
 
 const router = express.Router();
 
@@ -22,23 +23,24 @@ const upload = multer({storage});
 router.get('/', async (req, res) => {
    try {
        if(req.query.artist){
-           const data = await Album.find({author: req.query.artist});
-           res.send(data);
+           const data = await Album.find({author: req.query.artist}).populate('author');
+
+           const albums = await Promise.all(data.map(async albumItem => {
+               const totalTracks = await Track.aggregate([
+                   { $match: {album: albumItem._id} },
+                   { $count: 'allTracks' }
+               ]);
+
+               return {...albumItem._doc, ...totalTracks[0]}
+           }));
+
+           res.send(albums);
        } else {
            const data = await Album.find();
            res.send(data);
        }
    } catch (e) {
        res.send({error: e});
-   }
-});
-
-router.get('/:id', async (req, res) => {
-   try {
-       const album = await Album.find({author: req.params.id});
-       res.send(album);
-   } catch (e) {
-       res.send({error: 'Album not found'});
    }
 });
 
