@@ -13,9 +13,9 @@ router.post('/', async (req, res) => {
         newUser.addToken();
         await newUser.save();
 
-        res.send({token: newUser})
+        res.send(newUser)
     } catch (e) {
-        res.send({error: e})
+        res.status(404).send({error: 'Such username already exists'})
     }
 });
 
@@ -23,7 +23,7 @@ router.post('/sessions', authorization, async (req, res) => {
     req.user.addToken();
     req.user.save();
 
-    res.send({token: req.user.token})
+    res.send(req.user)
 });
 
 module.exports = router;

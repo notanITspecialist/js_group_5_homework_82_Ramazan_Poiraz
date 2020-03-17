@@ -7,9 +7,10 @@ const Track = require('./models/track');
 const init = async () => {
     await mongoose.connect('mongodb://localhost/music', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
 
-    const [Oleg, Vasya, Kirill] = await Artist.create({
-        name: 'Oleg',
-        info: 'Oleg на столько крут что он может гнуть арматуру взглядом'
+    const [Zipylya, Vasya, Kirill] = await Artist.create({
+        name: 'Zipylya',
+        info: 'Величайших исполнитель всия Руси',
+        photo: 'OP_pskNHTmh6cLyFci93n.jpeg'
     },{
         name: 'Vasya',
         info: 'Vasya на столько крут что он сыпет две пачки приправы в кукси'
@@ -18,13 +19,13 @@ const init = async () => {
         info: 'Kirill есть рамён и ему чётко'
     });
 
-    const [RedMold, Kykoldsinios, B2B, Exile] = await Album.create({
-        name: 'RedMold',
-        author: Oleg,
+    const [TyayTyay, Kykoldsinios, B2B, Exile] = await Album.create({
+        name: 'Tyay tyay tyay',
+        author: Zipylya,
         release: '2000'
     },{
         name: 'Kykoldsinios',
-        author: Oleg,
+        author: Zipylya,
         release: '2001'
     },{
         name: 'B2B',
@@ -37,25 +38,38 @@ const init = async () => {
     });
 
     await Track.create({
-        name: 'Track1',
-        album: RedMold,
-        duration: '123'
+        name: 'У тебя есть бит',
+        album: TyayTyay,
+        duration: '123',
+        videoId: 'qiIRObC3OS4',
+        increment: 1
     },{
-        name: 'Track2',
-        album: RedMold,
-        duration: '123'
+        name: 'Спорт - жизнь',
+        album: TyayTyay,
+        duration: '123',
+        videoId: 'LJq4HoICKt8',
+        increment: 2
     },{
-        name: 'Track3',
+        name: 'Экскременты',
         album: Kykoldsinios,
-        duration: '123'
+        duration: '123',
+        videoId: 'aS_wdyhu0xQ',
+        increment: 1
+    },{
+        name: 'Track33',
+        album: Kykoldsinios,
+        duration: '123',
+        increment: 2
     },{
         name: 'Track4',
         album: B2B,
-        duration: '123'
+        duration: '123',
+        increment: 1
     },{
         name: 'Track5',
         album: Exile,
-        duration: '123'
+        duration: '123',
+        increment: 1
     });
 };
 

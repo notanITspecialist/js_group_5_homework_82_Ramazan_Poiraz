@@ -1,6 +1,5 @@
 const express = require('express');
 const Track = require('../models/track');
-const Album = require('../models/album');
 
 const router = express.Router();
 
@@ -23,9 +22,12 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    const album = await Track.find({album: req.body.album});
+    req.body.increment = album.length + 1;
+    const newTrack = new Track(req.body);
     try{
-        const newTrack = await Track.create(req.body);
-        res.send({_id: newTrack})
+        await newTrack.save();
+        res.send(newTrack)
     } catch (e) {
         res.send({error: e})
     }

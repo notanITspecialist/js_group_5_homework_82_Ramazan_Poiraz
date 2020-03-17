@@ -10,7 +10,8 @@ module.exports = async (req, res, next) => {
   if(type !== 'Token' || !user) return res.status(401).send({error: 'Unauthorized'});
   req.newHistory = {
     user: user._id.toString(),
-    track: req.body.track
+    track: req.body.track,
+    author: req.body.author
   };
   next();
 };

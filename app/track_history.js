@@ -1,5 +1,7 @@
 const express = require('express');
 
+const tokenCheck = require('../middlewares/tokenCheck');
+
 const TrackHistory = require('../models/track_history');
 
 const historyAdded = require('../middlewares/historyAdded');
@@ -13,6 +15,16 @@ router.post('/', historyAdded, async (req, res) => {
       return res.send({track_history: newTrackHistory});
    } catch (e) {
       return res.status(400).send({error: e})
+   }
+});
+
+router.get('/', tokenCheck, async (req, res) => {
+   try {
+      const trackHistory = await TrackHistory.find({user: req.user._id}).populate(['track', 'author']);
+      const reverseHistory = trackHistory.reverse();
+      res.send(reverseHistory);
+   } catch (e) {
+      return res.send({error: e})
    }
 });
 

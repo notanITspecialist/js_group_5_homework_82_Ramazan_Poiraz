@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
 
 const Schema = mongoose.Schema;
-
-const connect = mongoose.createConnection('mongodb://localhost/music', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true});
-autoIncrement.initialize(connect);
 
 const trackSchema = new mongoose.Schema({
     name: {
@@ -19,10 +15,16 @@ const trackSchema = new mongoose.Schema({
     duration: {
         type: Number,
         required: true
+    },
+    increment: {
+        type: Number
+    },
+    videoId: String,
+    youtubeLink: {
+        type: String
     }
 });
 
-trackSchema.plugin(autoIncrement.plugin, 'Track');
-const Album = mongoose.model('Track', trackSchema);
+const Track = mongoose.model('Track', trackSchema);
 
-module.exports = Album;
+module.exports = Track;

@@ -11,6 +11,11 @@ const trackHistorySchema = mongoose.Schema({
         required: true,
         ref: 'Track'
     },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Artist'
+    },
     date: {
         type: Date,
         default: Date.now()
