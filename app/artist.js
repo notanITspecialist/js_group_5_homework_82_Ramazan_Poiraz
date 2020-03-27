@@ -3,6 +3,8 @@ const multer = require('multer');
 const nanoid = require('nanoid');
 const path = require('path');
 
+const checkToken = require('../middlewares/tokenCheck');
+
 const config = require('../config');
 const Artist = require('../models/artist');
 
@@ -20,15 +22,31 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 router.get('/', async (req, res) => {
-   const artists = await Artist.find();
+    if(req.query.published){
+        const artists = await Artist.find({published: req.query.published}).populate('userAuthor');
+        return  res.send(artists);
+    }
+   const artists = await Artist.find().populate('userAuthor');
    res.send(artists);
 });
 
-router.post('/', upload.single('photo'), async (req, res) => {
+router.get('/user', checkToken, async (req, res) => {
+    if(req.user.role === 'admin') {
+        const albums = await Artist.find();
+
+        return  res.send(albums);
+    }
+
+    const artists = await Artist.find({userAuthor: req.user._id});
+    res.send(artists);
+});
+
+router.post('/', [checkToken, upload.single('photo')], async (req, res) => {
     try {
         if(req.file){
             req.body.photo = req.file.filename;
         }
+        req.body.userAuthor = req.user._id;
 
         const newArtist = await Artist.create(req.body);
 

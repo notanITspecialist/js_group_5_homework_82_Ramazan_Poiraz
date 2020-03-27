@@ -7,6 +7,7 @@ const album = require('./app/album');
 const track = require('./app/tracks');
 const user = require('./app/user');
 const track_history = require('./app/track_history');
+const admin = require('./app/admin');
 
 const app = express();
 
@@ -22,6 +23,7 @@ const init = async () => {
     app.use('/track', track);
     app.use('/user', user);
     app.use('/track_history', track_history);
+    app.use('/admin', admin);
 
 
     app.listen(8000, () => {

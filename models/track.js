@@ -16,13 +16,20 @@ const trackSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    published: {
+      type: mongoose.Schema.Types.Bool,
+      required: true,
+      default: false
+    },
+    userAuthor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     increment: {
         type: Number
     },
     videoId: String,
-    youtubeLink: {
-        type: String
-    }
 });
 
 const Track = mongoose.model('Track', trackSchema);

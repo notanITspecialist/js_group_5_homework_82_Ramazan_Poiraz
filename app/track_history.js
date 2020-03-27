@@ -21,8 +21,8 @@ router.post('/', historyAdded, async (req, res) => {
 router.get('/', tokenCheck, async (req, res) => {
    try {
       const trackHistory = await TrackHistory.find({user: req.user._id}).populate(['track', 'author']);
-      const reverseHistory = trackHistory.reverse();
-      res.send(reverseHistory);
+      // const reverseHistory = trackHistory.reverse();
+      res.send(trackHistory);
    } catch (e) {
       return res.send({error: e})
    }
