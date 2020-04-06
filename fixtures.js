@@ -10,16 +10,20 @@ const init = async () => {
 
     const [user, admin, ramazan228] = await User.create({
         username: 'Ramazan',
+        displayName: 'Рамазан Пойраз',
         password: '123',
         token: 'user123',
+        avatar: 'https://kompromat1.live/foto/articles_foto/2019/04/22/114768.jpg',
         role: 'user'
     }, {
         username: 'Kadir',
+        displayName: 'Кадыр Пойраз',
         password: '123',
         token: 'admin123',
         role: 'admin'
     },{
         username: 'Ramazan228',
+        displayName: 'Рамазан два два восемь',
         password: '123',
         token: 'user123456',
         role: 'user'

@@ -22,9 +22,15 @@ const UserSchema = new mongoose.Schema({
     role: {
        type: String,
         required: true,
+        enum: ['user', 'admin'],
         default: 'user',
-        enum: ['user', 'admin']
-    }
+    },
+    displayName: {
+       type: String,
+        required: true
+    },
+    avatar: String,
+    facebookId: String
 });
 
 UserSchema.pre('save', async function (next) {
